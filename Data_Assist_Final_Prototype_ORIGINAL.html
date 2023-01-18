@@ -88,20 +88,6 @@ input, button {
     color: var(--grey);
 }
 
-#new-task-feedback {
-    flex: 1 1 0%;
-    background-color: var(--darker);
-    padding: 1rem;
-    border-radius: 1rem;
-    margin-right: 1rem;
-    color: var(--light);
-    font-size: 1.25rem;
-}
-
-#new-task-feedback::placeholder {
-    color: var(--grey);
-}
-
 #new-task-submit {
     color: var(--pink);
     font-size: 1.25rem;
@@ -233,9 +219,6 @@ th {
 <body>
  <header>
     <h1>Data Assist</h1>
-    <iframe width="700" height="500"
-      src="https://www.youtube.com/embed/tgbNymZ7vqY">
-    </iframe>
   <form id="new-task-form">
     <input type="text" id="new-task-input" placeholder="Enter a task or skill to observe">
     <button id="new-task-submit" type="submit">Add Task</button>
@@ -255,7 +238,6 @@ th {
             <tr>
                 <th>Task</th>
                 <th>Level</th>
-                <th>Feedback</th>
                 <th>Timestamp</th>
             </tr>
         </thead>
@@ -279,7 +261,7 @@ th {
   taskForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    // get the table values
+    // get the task name
     const taskName = taskInput.value;
 
     // create the task element
@@ -289,17 +271,18 @@ th {
       <div class="content">
         <span class="text">${taskName}</span>
       </div>
-      <div class="form">
-        <input type="text" id="new-task-feedback" placeholder="Enter feedback">
-        <button class="btn btn-success" id="btn btn-success" type="submit">➕</button>
+      <div class="actions">
+
+	<button class="btn btn-success">Green</button>
+    <button class="btn btn-warning">Yellow</button>
+    <button class="btn btn-danger">Red</button>
       </div>
     `;
 
-    const taskColor = "COLOR";
-
     // add event listeners to the buttons
-
-    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, taskColor));
+    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, "green"));
+    taskEl.querySelector(".btn-warning").addEventListener("click", () => addTaskToTable(taskName, "yellow"));
+    taskEl.querySelector(".btn-danger").addEventListener("click", () => addTaskToTable(taskName, "red"));
 
     // append the task element to the task list
     taskList.appendChild(taskEl);
@@ -309,8 +292,6 @@ th {
   });
 
   function addTaskToTable(taskName, color) {
-    const feedback = document.querySelector("#new-task-feedback").value;
-
     // get the current date and time
     const dateTime = new Date().toLocaleString();
 
@@ -320,13 +301,11 @@ th {
     // insert cells in the row
     const taskNameCell = newRow.insertCell(0);
     const colorCell = newRow.insertCell(1);
-    const feedbackCell = newRow.insertCell(2);
-    const dateTimeCell = newRow.insertCell(3);
+    const dateTimeCell = newRow.insertCell(2);
 
     // fill the cells with data
     taskNameCell.innerHTML = taskName;
     colorCell.innerHTML = color;
-    feedbackCell.innerHTML = feedback;
     dateTimeCell.innerHTML = dateTime;
   }
   // Create listener for CSV button 
