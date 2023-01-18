@@ -290,16 +290,20 @@ th {
         <span class="text">${taskName}</span>
       </div>
       <div class="form">
+        <select name="new-task-color" id="new-task-color">
+          <option value="green">green</option>
+          <option value="yellow">yellow</option>
+          <option value="red">red</option>
+        </select>
+        <input type="text" id="new-task-color">
         <input type="text" id="new-task-feedback" placeholder="Enter feedback">
         <button class="btn btn-success" id="btn btn-success" type="submit">➕</button>
       </div>
     `;
 
-    const taskColor = "COLOR";
-
     // add event listeners to the buttons
 
-    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, taskColor));
+    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName));
 
     // append the task element to the task list
     taskList.appendChild(taskEl);
@@ -308,8 +312,9 @@ th {
     taskForm.reset();
   });
 
-  function addTaskToTable(taskName, color) {
+  function addTaskToTable(taskName) {
     const feedback = document.querySelector("#new-task-feedback").value;
+    const color = document.querySelector("#new-task-color").value;
 
     // get the current date and time
     const dateTime = new Date().toLocaleString();
