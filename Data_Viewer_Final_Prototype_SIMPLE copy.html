@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<title>Data Assist</title>
+<style>
+:root {
+    --dark: #05152E;
+    --darker: #1F2937;
+    --darkest: #001E3C;
+    --grey: #6B7280;
+    --pink: #EC4899;
+    --purple: #8B5CF6;
+    --light: #EEE;
+}
+  /* Add your styles for the buttons here */
+  .green {
+  color: white;
+  background-color: green;
+}
+
+.yellow {
+  color: white;
+  background-color: yellow;
+}
+
+.red {
+  color: white;
+  background-color: red;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Fira sans", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #FFF;
+    background-color: var(--dark);
+}
+
+header {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+header h1{ 
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: white;
+    margin-bottom: 1rem;
+}
+h1{
+    text-align: center;
+}
+#new-task-form {
+    display: flex;
+}
+
+input, button {
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+#new-task-input {
+    flex: 1 1 0%;
+    background-color: var(--darker);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    color: var(--light);
+    font-size: 1.25rem;
+}
+
+#new-task-input::placeholder {
+    color: var(--grey);
+}
+
+#new-task-feedback {
+    flex: 1 1 0%;
+    background-color: var(--darker);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    color: var(--light);
+    font-size: 1.25rem;
+}
+
+#new-task-feedback::placeholder {
+    color: var(--grey);
+}
+
+#new-task-submit {
+    color: var(--pink);
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-image: linear-gradient(to right, var(--white), var(--white));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+#new-task-submit:hover {
+    opacity: 0.8;
+}
+
+#new-task-submit:active {
+    opacity: 0.6;
+}
+
+main {
+    flex: 1 1 0%;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.task-list {
+    padding: 1rem;
+}
+
+.task-list h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--grey);
+    margin-bottom: 1rem;
+}
+
+#tasks .task {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--darkest);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.task .content {
+    flex: 1 1 0%;
+}
+
+.task .content .text {
+    color: var(--light);
+    font-size: 1.125rem;
+    width: 100%;
+    display: block;
+    transition: 0.4s;
+}
+
+.task .content .text:not(:read-only) {
+    color: var(--pink);
+}
+
+.task .actions {
+    display: flex;
+    margin: 0 -0.5rem;
+}
+
+.task .actions button {
+    cursor: pointer;
+    margin: 0 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.4s;
+}
+
+.task .actions button:hover {
+    opacity: 0.8;
+}
+
+.task .actions button:active {
+    opacity: 0.6;
+}
+
+.task .actions .edit {
+    background-image: linear-gradient(to right, var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.task .actions .delete {
+    color: crimson;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+   color: black;
+}
+
+th {
+  background-color: ##8b8f8b;
+  color: white;
+}
+#export-button {
+  /* add your desired styles here */
+  color: white;
+  background-color: blue;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+
+
+</style>
+</head>
+
+<body>
+  <header>
+    <h1>Data Assist</h1>
+    <div id="playertop"></div>
+    <form id="new-task-form">
+      <input type="text" id="new-task-input" placeholder="Enter a task or skill to observe">
+      <button id="new-task-submit" type="submit">Add Task</button>
+    </form>
+
+  </header>
+    <main>
+        <section class="task-list">
+            <h2>Tasks</h2>
+            <div id="tasks">
+            </div>
+        </section>
+    <table id="task-table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Feedback</th>
+                <th>Level</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="task-table-body"></tbody>
+    </table>
+	<button id="export-button" onclick="exportTableToCSV()">Export as CSV</button>
+	
+
+</main>
+
+</body>
+
+</html>
+
+<script>
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('playertop', {
+      height: '400',
+      width: '800',
+      videoId: 'ksVakjS6-54',
+    });
+  }
+
+  const taskForm = document.querySelector("#new-task-form");
+  const taskInput = document.querySelector("#new-task-input");
+  const taskList = document.querySelector("#tasks");
+  const taskTable = document.querySelector("#task-table");
+
+  taskForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    // get the task name
+    const taskName = taskInput.value;
+
+    // create the task element
+    const taskEl = document.createElement("div");
+    taskEl.classList.add("task");
+    taskEl.innerHTML = `
+      <div class="content">
+        <span class="text">${taskName}</span>
+      </div>
+      <div class="actions">
+        <input type="text" id="new-task-feedback" placeholder="Enter optional feedback">
+        <button class="btn btn-success">Green</button>
+        <button class="btn btn-warning">Yellow</button>
+        <button class="btn btn-danger">Red</button>
+      </div>
+    `;
+
+    // add event listeners to the buttons
+    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, "green"));
+    taskEl.querySelector(".btn-warning").addEventListener("click", () => addTaskToTable(taskName, "yellow"));
+    taskEl.querySelector(".btn-danger").addEventListener("click", () => addTaskToTable(taskName, "red"));
+
+    // append the task element to the task list
+    taskList.appendChild(taskEl);
+
+    // reset the form
+    taskForm.reset();
+  });
+
+  function addTaskToTable(taskName, color) {
+    // get feedback
+    const feedback = document.querySelector("#new-task-feedback").value;
+
+    // get the current date and time
+    const timestamp = player.getCurrentTime();
+
+    // create a new row in the table
+    const newRow = taskTable.insertRow();
+
+    // insert cells in the row
+    const taskNameCell = newRow.insertCell(0);
+    const feedbackCell = newRow.insertCell(1);
+    const colorCell = newRow.insertCell(2);
+    const timestampCell = newRow.insertCell(3);
+
+    // fill the cells with data
+    taskNameCell.innerHTML = taskName;
+    feedbackCell.innerHTML = feedback;
+    colorCell.innerHTML = color;
+    timestampCell.innerHTML = timestamp;
+
+    document.querySelector("#new-task-feedback").reset();
+  }
+  // Create listener for CSV button 
+   document.getElementById("export-button").addEventListener("click", function() {
+    // Select the table rows
+    var rows = document.querySelectorAll("table tr");
+
+    // Create a CSV string
+    var csv = "";
+    rows.forEach(function(row) {
+      var cells = row.querySelectorAll("td, th");
+      csv += cells.map(function(cell) {
+        return cell.textContent.replace(/,/g, "|");
+      }).join(",");
+      csv += "\n";
+    });
+
+    // Download the CSV file
+    var link = document.createElement("a");
+    link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+    link.download = "table-data.csv";
+    link.click();
+  });
+  
+  function exportTableToCSV() {
+  // Get the table data
+  const rows = document.querySelectorAll("table tr");
+  let csv = "";
+  
+  // Loop through the rows and add the data to the CSV string
+  for (const row of rows) {
+    const data = row.querySelectorAll("td, th");
+    let rowData = "";
+    for (const cell of data) {
+      rowData += `"${cell.textContent}",`;
+    }
+    csv += `${rowData}\n`;
+  }
+  
+  // Download the CSV file
+  const link = document.createElement("a");
+  link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csv));
+  link.setAttribute("download", "table-data.csv");
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
+</script>
+
+
+
