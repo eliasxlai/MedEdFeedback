@@ -52,7 +52,10 @@ class TableCsv {
     const rowsHtml = data.map((row) => {
       return `
                 <tr>
-                    ${row.map((text) => `<td>${text}</td>`).join("")}
+                    ${row.slice(0,3).map((text) => `<td>${text}</td>`).join("")}
+                    <td>
+                    ${`<a href="javascript:void(0);" onclick="setCurrentTime(\'' + ${row[3]} + '\')">link</a`}
+                    </td>
                 </tr>
             `;
     });
@@ -81,3 +84,19 @@ csvFileInput.addEventListener("change", (e) => {
     }
   });
 });
+
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('playertop', {
+    height: '400',
+    width: '800',
+    videoId: 'ksVakjS6-54',
+  });
+}
+function setCurrentTime(seconds) {
+  player.seekTo(seconds);
+}
