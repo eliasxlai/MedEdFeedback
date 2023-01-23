@@ -232,11 +232,11 @@ th {
 
 <body>
   <header>
-    <h1>Data Viewer</h1>
+    <h1>Data Assist</h1>
     <div id="playertop"></div>
-    <form>
-      <input type="file" id="csv-file" accept=".csv">
-      <button type="submit">Upload</button>
+    <form id="new-task-form">
+      <input type="text" id="new-task-input" placeholder="Enter a task or skill to observe">
+      <button id="new-task-submit" type="submit">Add Task</button>
     </form>
 
   </header>
@@ -277,7 +277,7 @@ th {
     player = new YT.Player('playertop', {
       height: '400',
       width: '800',
-      videoId: 'ksVakjS6-54',
+      videoId: 'U1zq4T7MEWw',
     });
   }
 
@@ -285,6 +285,7 @@ th {
   const taskInput = document.querySelector("#new-task-input");
   const taskList = document.querySelector("#tasks");
   const taskTable = document.querySelector("#task-table");
+  var num = 0;
 
   taskForm.addEventListener("submit", e => {
     e.preventDefault();
@@ -300,28 +301,29 @@ th {
         <span class="text">${taskName}</span>
       </div>
       <div class="actions">
-        <input type="text" id="new-task-feedback" placeholder="Enter optional feedback">
+        <input type="text" id="new-task-feedback + ${num.toString()}" placeholder="Enter optional feedback">
         <button class="btn btn-success">Green</button>
         <button class="btn btn-warning">Yellow</button>
-        <button class="btn btn-danger">Red</button>
+        <button class="btn btn-danger"">Red</button>
       </div>
     `;
 
     // add event listeners to the buttons
-    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, "green"));
-    taskEl.querySelector(".btn-warning").addEventListener("click", () => addTaskToTable(taskName, "yellow"));
-    taskEl.querySelector(".btn-danger").addEventListener("click", () => addTaskToTable(taskName, "red"));
+    taskEl.querySelector(".btn-success").addEventListener("click", () => addTaskToTable(taskName, document.querySelector(taskEl.querySelector(".btn-success").id.toString()).value, "green"));
+    taskEl.querySelector(".btn-warning").addEventListener("click", () => addTaskToTable(taskName, document.querySelector("#new-task-feedback").value, "yellow"));
+    taskEl.querySelector(".btn-danger").addEventListener("click", () => addTaskToTable(taskName, document.querySelector("#new-task-feedback").value, "red"));
 
     // append the task element to the task list
     taskList.appendChild(taskEl);
+    num += 1;
 
     // reset the form
     taskForm.reset();
   });
 
-  function addTaskToTable(taskName, color) {
+  function addTaskToTable(taskName, feedback, color) {
     // get feedback
-    const feedback = document.querySelector("#new-task-feedback").value;
+    // const feedback = document.querySelector("#new-task-feedback").value;
 
     // get the current date and time
     const timestamp = player.getCurrentTime();
